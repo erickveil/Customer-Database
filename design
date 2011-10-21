@@ -1,0 +1,21 @@
+display title
+open file
+display menu
+prompt menu selection
+	display record
+		prompt for key
+		search record
+		print field title+record info
+		menu:
+			edit record
+				prompt for each field
+				return to edit until done
+				update record	
+				return to menu
+	new record
+		prompt for each field
+		return to edit until done
+		update record
+		return to menu
+	quit
+
