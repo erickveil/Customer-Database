@@ -106,7 +106,7 @@ void DATABASE::WriteEntry(void)
 void DATABASE::PrintRecord(void)
 {
     string cell;
-    istream sstream;
+    int pos = 0;
     do
     {
         key=PromptValidString("Enter record Key: ");
@@ -117,22 +117,19 @@ void DATABASE::PrintRecord(void)
     // assign record to a string
     entry=iter->second;
     // parse string
-    istringstream iss(entry);
-    copy(istream_iterator<string>(iss),
-             istream_iterator<string>(),
-             ostream_iterator<string>(cout, "\t"));
+    
 
-    cout<<"ID: "<<getline(sstream,250,'\t')<<endl;
-    cout<<"Company Name: "<<getline(sstream,250,'\t')<<endl;
-    cout<<"Contact Name: "<<getline(sstream,250,'\t')<<endl;
-    cout<<"Contact Title: "<<getline(sstream,250,'\t')<<endl;
-    cout<<"Address: "<<getline(sstream,250,'\t')<<endl;
-    cout<<"City: "<<getline(sstream,250,'\t')<<endl;
-    cout<<"Region: "<<getline(sstream,250,'\t')<<endl;    
-    cout<<"PostalCode: "<<getline(sstream,250,'\t')<<endl;
-    cout<<"Country: "<<getline(sstream,250,'\t')<<endl;
-    cout<<"Phone: "<<getline(sstream,250,'\t')<<endl;
-    cout<<"Fax: "<<getline(sstream,250,'\t')<<endl;    
+    cout<<"ID: "<<Parse(entry, TAB, &pos)<<endl;
+    cout<<"Company Name: "<<Parse(entry, TAB, &pos)<<endl;
+    cout<<"Contact Name: "<<Parse(entry, TAB, &pos)<<endl;
+    cout<<"Contact Title: "<<Parse(entry, TAB, &pos)<<endl;
+    cout<<"Address: "<<Parse(entry, TAB, &pos)<<endl;
+    cout<<"City: "<<Parse(entry, TAB, &pos)<<endl;
+    cout<<"Region: "<<Parse(entry, TAB, &pos)<<endl;    
+    cout<<"PostalCode: "<<Parse(entry, TAB, &pos)<<endl;
+    cout<<"Country: "<<Parse(entry, TAB, &pos)<<endl;
+    cout<<"Phone: "<<Parse(entry, TAB, &pos)<<endl;
+    cout<<"Fax: "<<Parse(entry, TAB, &pos)<<endl;    
 }
 
 void DATABASE::SaveMap(void)
@@ -140,6 +137,7 @@ void DATABASE::SaveMap(void)
     file.close();
     file.open(IOFILE,fstream::trunc);
     string temp;
+    char* cstr;
      if (file.fail())
      {
          cout<<"\nFile read\\write failed: LoadFile()\n";
@@ -148,7 +146,9 @@ void DATABASE::SaveMap(void)
     for (iter = mymap.begin(); iter != mymap.end(); ++iter)
      {
          temp = iter->second;
-        file.write(temp,sizeof(temp));
+         cstr = new char [temp.size()+1];
+         strcpy(cstr,temp.c_str());
+        file.write(cstr,sizeof(temp));
      }
     cout<<"File saved."<<endl;
 }

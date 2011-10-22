@@ -351,3 +351,16 @@ string ConvertLineLowerCase(string line)
     newstr+=tolower(line[t]);
     return newstr;
 }
+
+string Parse(string input, char delim, int* start)
+{
+    string ret="";
+    for(unsigned int t = *start;t<input.size();++t)
+    {
+        if(input[t] != delim)
+        {
+            ret+=input[t];
+        }
+    }
+    return ret;
+}
