@@ -2,33 +2,75 @@
 #include <map>
 using namespace std;
 
+class RECORD
+{
+private:
+    string key,name;
+public:
+    RECORD()
+    {}
+
+    RECORD(string k, string n)
+    {
+        key=k;
+        name=n;
+    }
+    void SetKey(string k)
+    {
+        key=k;
+    }
+    void SetName(string n)
+    {
+        name=n;
+    }
+    string GetKey(void)
+    {
+        return key;
+    }
+    string GetName(void)
+    {
+        return name;
+    }
+    string GetRecord(void)
+    {
+        string record;
+        record = key+"\t"+name;
+        cout<<record;
+        return record;
+    }
+};
+
+ostream& operator<<(ostream& os, RECORD& obj) 
+{ 
+  obj.GetRecord();
+  return os;
+}
+
 
 int main(void)
 {
     // declaration of map
 
     // map<index field datatype,the record type> mapname
-    map<char,string> mymap;
+    map<string,RECORD> mymap;
     // setup iterator
-    map<char,string>::iterator iter;
+    map<string,RECORD>::iterator iter;
 
      
 
     // add strings to map
-    string s1 = "This";
-    string s2 = "is";
-    string s3 = "an";
-    string s4 = "example";
-    string s5 = "string";
+    RECORD r1("Aa","Bob Smith");
+    RECORD r2("Bb","John Ki");
+    RECORD r3("Cc","Cat Stevens");
+
 
     // add strings to the map
 
     // mapname[index value] = record
-    mymap[s1[0]] = s1;
-    mymap[s2[0]] = s2;
-    mymap[s3[0]] = s3;
-    mymap[s4[0]] = s4;
-    mymap[s5[0]] = s5;
+    mymap["Aa"] = r1;
+    mymap["Bb"] = r2;
+    mymap["Cc"] = r3;
+    
 
     // output map
     cout<<"Map output: "<<endl;
@@ -36,12 +78,13 @@ int main(void)
     {
         //(*pointer to iterator value).first is the key
         //pointer to iteraror value->second is the record
-        cout<<(*iter).first << " is the first characterin the word " << iter->second << endl;
+        cout<<(*iter).first << " is the key in the record " << iter->second << endl;
     }
 
     // add an element to the map
-    string s6 = "test";
-    mymap[s6[0]] = s6;
+    RECORD r4("Dd","Doug Dee");
+    // map[key value]
+    mymap["Dd"] = r4;
     cout<<"Second output: "<<endl;
     for (iter = mymap.begin(); iter != mymap.end(); ++iter)
     {
@@ -50,8 +93,8 @@ int main(void)
 
     //adding a third element
 
-    string s7 = "sample";
-    mymap[s7[0]] = s7;
+    RECORD r5("Cc","Zach Black");
+     mymap["Cc"] = r5;
 
     cout << "third output: "<<endl;
     for (iter = mymap.begin(); iter != mymap.end(); ++iter)
