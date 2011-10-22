@@ -123,50 +123,7 @@ void DeleteFile(void)
  file.close();
 }
 
-/*
- LoadFile()
- Erick Veil
- 10-11-11
- pre: IOFILE constant defined as the name of the file to load,
- a structure and its members, a global vector called list
- post: vector should be of type THING structures, the members of
- which are loaded with the contents of IOFILE
- note: and str1 member function of THING
- will all have to be customised based on the program this function is
- included in.
- requires: fstream, iostream
-*/
-int LoadFile(void)
-{/*
- RECORD temp;
- fstream file;
- string temp_in;
- file.open(IOFILE,fstream::in);
- if (file.fail())
- {
- cout<<"\nFile read\\write failed: LoadFile()\n";
- exit(777);
- }
- while(!file.eof())
- {
- // one getline statement for each member of the structure
- getline(file,temp.decrip);
- if(!temp.decrip.empty())
- {
- getline(file,temp_in);
- temp.qty=atoi(temp_in.c_str());
- getline(file,temp_in);
- temp.cost=atof(temp_in.c_str());
- getline(file,temp_in);
- temp.price=atof(temp_in.c_str());
- getline(file,temp.date);
- list.push_back(temp);
- }
- }
- file.close();
- return list.size();*/
-    return 0;
-}
+
 
 /*
     Pause()

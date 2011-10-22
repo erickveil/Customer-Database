@@ -10,6 +10,7 @@
 #include <limits.h>
 #include <fstream>
 #include <cstring>
+#include <map>
 
 using namespace std;
 
@@ -25,7 +26,6 @@ extern void Pause(void);
 extern string ConvertLineLowerCase(string line);
 
 extern void OpenFile(fstream* fstrm);
-extern int LoadFile(void);
 extern void DeleteFile(void);
 extern int SaveStr(string str);
 extern void SaveFile();
