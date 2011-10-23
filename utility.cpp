@@ -352,6 +352,13 @@ string ConvertLineLowerCase(string line)
     return newstr;
 }
 
+/*
+    ConvertLineLowerCase()
+    Erick Veil
+    10-23-11
+    pre: a string
+    post: converts every letter of the line to upper case. Returns the altered string
+*/
 string ConvertLineUpperCase(string line)
 {
     unsigned int t;
@@ -361,6 +368,16 @@ string ConvertLineUpperCase(string line)
     return newstr;
 }
 
+/*
+    Parse()
+    Erick Veil
+    10-23-11
+    pre: input is a string deliminated by delim characters. start is a pointer to an integer
+        which states the starting point to begin parsing the string
+    post: returns a string that begins at start and ends at the next delim character. The 
+        start value is advanced to the place in the string just beyond the delim, so this 
+        function can be called in a loop, returning tokens in order.
+*/
 string Parse(string input, char delim, int* start)
 {
     string ret="";

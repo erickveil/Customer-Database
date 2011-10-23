@@ -1,3 +1,11 @@
+/*
+    Customer Database
+    Erick Veil
+
+    A file-based database of customers that can be viewed, saved,
+    edited, and erased.
+    Demostrates the use of the map object and oop programming structure
+*/
 #include "utility.h"
 
 using namespace std;
@@ -10,7 +18,12 @@ map<string,string>::iterator iter;
 
 class DATABASE;
 void Quit(DATABASE* data);
-
+/*
+    MENU
+    Menu class can be one of two menus, depending
+    on which type it is assigned. Selection holds the 
+    users current menu selection.
+*/
 class MENU
 {
 private:
@@ -25,6 +38,12 @@ public:
     void ParseSelection(DATABASE* data);
 };
 
+/*
+    DATABASE
+    Handles the manipulation of the data map and file
+    entry holds the current entry being worked with
+    key holds the current key
+*/
 class DATABASE
 {
 private:
@@ -43,8 +62,7 @@ public:
     string BuildKey(string company);
 };
 
-
-
+// entry point
 int main(void)
 {
     DATABASE data;
@@ -57,6 +75,12 @@ int main(void)
 
     return 0;
 }
+
+/*
+    DATABASE
+    constructor
+    opens the data file and fills the map
+*/
 
 DATABASE::DATABASE(void)
 {
@@ -77,11 +101,21 @@ DATABASE::DATABASE(void)
      file.close();
 }
 
+/*
+    ~DATABASE
+    destructor
+    closes the data file if left open
+*/
 DATABASE::~DATABASE(void)
 {
     file.close();
 }
 
+/*
+    PromptForData
+    out/in prompts to fill a record in the database
+    if no parameter is passed, then a key is generated from the company name
+*/
 void DATABASE::PromptForData(void)
 {
     string in;
@@ -101,6 +135,11 @@ void DATABASE::PromptForData(void)
     this->WriteEntry();
 }
 
+/*
+    PromptForData
+    out/in prompts to fill a record in the database
+    overloaded to accept a key string for editing existing entries
+*/
 void DATABASE::PromptForData(string key)
 {
     entry = key;
@@ -117,11 +156,22 @@ void DATABASE::PromptForData(string key)
     this->WriteEntry();
 }
 
+/*
+    WriteEntry
+    takes a preformatted string from the obect's entry member and 
+    records it to the map as a data entry. This will either overwrite an 
+    existing entry or make a new one depending on if the key exists or not
+*/
 void DATABASE::WriteEntry(void)
 {
     mymap[key] = entry;
 }
 
+/*
+    PrintRecord
+    prompts user for a record key and then displays that record to
+    the screen if found in the map
+*/
 void DATABASE::PrintRecord(void)
 {
     string cell;
@@ -155,6 +205,10 @@ void DATABASE::PrintRecord(void)
     cout<<"Fax: "<<Parse(entry, TAB, &pos)<<endl;    
 }
 
+/*
+    SaveMap
+    overwrites the data file with a current version of the map
+*/
 void DATABASE::SaveMap(void)
 {
     string temp;
@@ -191,6 +245,10 @@ void DATABASE::SaveMap(void)
     cout<<"File saved."<<endl;
 }
 
+/*
+    BuildKey
+    generates a new customer key from the company name
+*/
 string DATABASE::BuildKey(string company)
 {
     key.clear();
@@ -213,11 +271,23 @@ string DATABASE::BuildKey(string company)
     return key;
 }
 
+
+/*
+    GetKey
+    returns the current key for the entry being worked with
+*/
 string DATABASE::GetKey(void)
 {
     return key;
 }
 
+/*
+    MENU
+   constructor
+   type takes either MENU_TYPE_MAIN or MENU_TYPE_SUB
+   which determines if this menu will be the main menu or
+   the sub menu
+*/
 MENU::MENU(int type)
 {
     menutype=type;
@@ -227,6 +297,10 @@ MENU::MENU(int type)
         maxoptions=4;
 }
 
+/*
+   PrintMenu
+   Prints a menu to the screen, depending on its type
+*/
 void MENU::PrintMenu(void)
 {
     switch(this->menutype)
@@ -237,18 +311,27 @@ void MENU::PrintMenu(void)
             <<"\t3. Quit"<<endl<<endl;
         break;
     case MENU_TYPE_SUB:
-        cout<<"\t1. Edit this record"<<"\t2. Return to Main Menu"
+        cout<<"1. Edit this record"<<"\t2. Return to Main Menu"
             <<"\t3. Erase this record"<<"\t4. Quit"<<endl<<endl;
         break;
     }
 }
 
+/*
+   PromptForSelection
+  Prompts the user for a valid menu item selection
+*/
 void MENU::PromptForSelection(DATABASE* data)
 {
     selection = PromptValidInt(1, maxoptions, "Enter your selection: ");
     this->ParseSelection(data);
 }
 
+/*
+   ParseSelection
+   Reads the selection member value and determines what action is
+   taken based off of which menu this is.
+*/
 void MENU::ParseSelection(DATABASE* data)
 {
     MENU submenu(MENU_TYPE_SUB);
@@ -294,6 +377,11 @@ void MENU::ParseSelection(DATABASE* data)
     }
 }
 
+/*
+   Quit
+   The exit point of the program
+   Saves the data file, closes the program
+*/
 void Quit(DATABASE* data)
 {
     data->SaveMap();
