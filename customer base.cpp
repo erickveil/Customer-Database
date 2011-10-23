@@ -194,22 +194,22 @@ void DATABASE::SaveMap(void)
 string DATABASE::BuildKey(string company)
 {
     key.clear();
-    key.resize(5);
     int entryplace=0;
-    for (int letter = 0; letter<5;++letter)
+    while(key.size()<5)
     {
-        if(entry[entryplace] >= 65 ||   // upper case letters
-            entry[entryplace] <= 90 ||
-            entry[entryplace] >=97 ||   // lower case letters
-            entry[entryplace] <=122
+        if(
+            (company[entryplace] >= 65 &&   // upper case letters
+            company[entryplace] <= 90) ||
+            (company[entryplace] >=97 &&   // lower case letters
+            company[entryplace] <=122)
             )
         {
-            key[letter]=entry[entryplace];
+            key+=company[entryplace];
         }
         ++entryplace;
     }
-    ConvertLineUpperCase(key);
-    cout << "Built key: "<<key<<endl;
+    key=ConvertLineUpperCase(key);
+    cout << "Client's key: "<<key<<endl;
     return key;
 }
 
@@ -271,7 +271,6 @@ void MENU::ParseSelection(DATABASE* data)
         switch(this->selection)
         {
         case 1:
-            cout<<"key: "<<data->GetKey()<<endl;
             data->PromptForData();
             break;
         case 2:
