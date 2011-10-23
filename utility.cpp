@@ -366,9 +366,14 @@ string Parse(string input, char delim, int* start)
     string ret="";
     for(unsigned int t = *start;t<input.size();++t)
     {
+        ++*start;
         if(input[t] != delim)
         {
             ret+=input[t];
+        }
+        else
+        {
+            break;
         }
     }
     return ret;
