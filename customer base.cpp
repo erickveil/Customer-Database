@@ -221,7 +221,10 @@ string DATABASE::GetKey(void)
 MENU::MENU(int type)
 {
     menutype=type;
-    maxoptions=3;
+    if(type==MENU_TYPE_MAIN)
+        maxoptions=3;
+    if(type==MENU_TYPE_SUB)
+        maxoptions=4;
 }
 
 void MENU::PrintMenu(void)
@@ -234,15 +237,15 @@ void MENU::PrintMenu(void)
             <<"\t3. Quit"<<endl<<endl;
         break;
     case MENU_TYPE_SUB:
-        cout<<"\t1. Edit record"<<"\t2. Return to Main Menu"
-            <<"\t3. Quit"<<endl<<endl;
+        cout<<"\t1. Edit this record"<<"\t2. Return to Main Menu"
+            <<"\t3. Erase this record"<<"\t4. Quit"<<endl<<endl;
         break;
     }
 }
 
 void MENU::PromptForSelection(DATABASE* data)
 {
-    selection = PromptValidInt(1, 3, "Enter your selection: ");
+    selection = PromptValidInt(1, maxoptions, "Enter your selection: ");
     this->ParseSelection(data);
 }
 
@@ -277,6 +280,13 @@ void MENU::ParseSelection(DATABASE* data)
             // should just pass through to go to the main menu.
             break;
         case 3:
+            if(GetYN("Are you sure you want to erase this? (Y/N): "))
+            {
+                mymap.erase(data->GetKey());
+                cout<<"Record erased."<<endl;
+            }
+            break;
+        case 4:
             Quit(data);
             break;
         }
