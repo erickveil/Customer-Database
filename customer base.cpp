@@ -129,6 +129,7 @@ void DATABASE::PrintRecord(void)
     do
     {
         key=PromptValidString("Enter record Key: ");
+        key=ConvertLineUpperCase(key);
         if(mymap.count(key)==0)
         {
             cout<<"That key does not exist."<<endl;
@@ -179,11 +180,11 @@ void DATABASE::SaveMap(void)
          temp = iter->second;
 
          // converting string to array
-         cstr = new char [temp.size()+2];
+         cstr = new char [temp.size()+1];
          strcpy(cstr,temp.c_str());
-         cstr[temp.size()+1]='\n';
+         cstr[temp.size()]='\n';
 
-        file.write(cstr,temp.size()+2);
+        file.write(cstr,temp.size()+1);
         delete cstr;
      }
     file.close();
