@@ -24,6 +24,7 @@ extern double PromptValidDouble(double low, string prompt);
 extern int GetYN(string msg);
 extern void Pause(void);
 extern string ConvertLineLowerCase(string line);
+extern string ConvertLineUpperCase(string line);
 extern string Parse(string input, char delim, int* start);
 
 extern void OpenFile(fstream* fstrm);

@@ -35,9 +35,11 @@ public:
     DATABASE(void);
     ~DATABASE(void);
     void PromptForData(void);
+    void PromptForData(string key);
     void WriteEntry(void);
     void PrintRecord(void);
     void SaveMap(void);
+    string GetKey(void);
     string BuildKey(string company);
 };
 
@@ -62,16 +64,17 @@ DATABASE::DATABASE(void)
      file.open(IOFILE,fstream::in);
      if (file.fail())
      {
-         cout<<"\nFile read\\write failed: LoadFile()\n";
+         cout<<"\nFile read\\write failed: DATABASE() constructor\n";
          exit(777);
      }
      while(!file.eof())
      {
          // one getline statement for each member of the map
          getline(file,temp_in);
-         key = temp_in.substr(0,temp_in.find('\t'));
+         key = temp_in.substr(0,temp_in.find('\t')); // should get first word in the line
          mymap[key] = temp_in; 
      }
+     file.close();
 }
 
 DATABASE::~DATABASE(void)
@@ -86,6 +89,22 @@ void DATABASE::PromptForData(void)
     key = this->BuildKey(in);
     entry = key+TAB+in;
 
+    entry += TAB+ PromptValidString("Contact Name: ");
+    entry += TAB+ PromptValidString("Contact Title: ");
+    entry += TAB+ PromptValidString("Address: ");
+    entry += TAB+ PromptValidString("City: ");
+    entry += TAB+ PromptValidString("Region: ");
+    entry += TAB+ PromptValidString("Postal Code: ");
+    entry += TAB+ PromptValidString("Country: ");
+    entry += TAB+ PromptValidString("Phone: ");
+    entry += TAB+ PromptValidString("Fax: ");
+    this->WriteEntry();
+}
+
+void DATABASE::PromptForData(string key)
+{
+    entry = key;
+    entry +=TAB+ PromptValidString("Company Name: ");
     entry += TAB+ PromptValidString("Contact Name: ");
     entry += TAB+ PromptValidString("Contact Title: ");
     entry += TAB+ PromptValidString("Address: ");
@@ -134,28 +153,63 @@ void DATABASE::PrintRecord(void)
 
 void DATABASE::SaveMap(void)
 {
-    file.close();
-    file.open(IOFILE,fstream::trunc);
     string temp;
     char* cstr;
+    ofstream file;
+
+    file.open(IOFILE,ios::trunc);
+
+    if (file.eof())
+        cout<<"eofbit set"<<endl;
+    if (file.fail())
+        cout<<"failbit set"<<endl;
+    if (file.bad())
+        cout<<"badbit set"<<endl;
+    
      if (file.fail())
      {
-         cout<<"\nFile read\\write failed: LoadFile()\n";
+         cout<<"\nFile read\\write failed: SaveMap()\n";
          exit(777);
      }
     for (iter = mymap.begin(); iter != mymap.end(); ++iter)
      {
          temp = iter->second;
-         cstr = new char [temp.size()+1];
+         cstr = new char [temp.size()+2];
          strcpy(cstr,temp.c_str());
-        file.write(cstr,sizeof(temp));
+         cout<<cstr;
+         cstr[temp.size()+1]='\n';
+        file.write(cstr,temp.size()+2);
+        delete cstr;
      }
+    file.close();
     cout<<"File saved."<<endl;
 }
 
 string DATABASE::BuildKey(string company)
 {
-    return "";
+    key.clear();
+    key.resize(5);
+    int entryplace=0;
+    for (int letter = 0; letter<5;++letter)
+    {
+        if(entry[entryplace] >= 65 ||   // upper case letters
+            entry[entryplace] <= 90 ||
+            entry[entryplace] >=97 ||   // lower case letters
+            entry[entryplace] <=122
+            )
+        {
+            key[letter]=entry[entryplace];
+        }
+        ++entryplace;
+    }
+    ConvertLineUpperCase(key);
+    cout << "Built key: "<<key<<endl;
+    return key;
+}
+
+string DATABASE::GetKey(void)
+{
+    return key;
 }
 
 MENU::MENU(int type)
@@ -174,7 +228,7 @@ void MENU::PrintMenu(void)
             <<"\t3. Quit"<<endl<<endl;
         break;
     case MENU_TYPE_SUB:
-        cout<<"\t1. Edit record"<<endl<<"\t2. Return to Main Menu"
+        cout<<"\t1. Edit record"<<"\t2. Return to Main Menu"
             <<"\t3. Quit"<<endl<<endl;
         break;
     }
@@ -188,6 +242,7 @@ void MENU::PromptForSelection(DATABASE* data)
 
 void MENU::ParseSelection(DATABASE* data)
 {
+    MENU submenu(MENU_TYPE_SUB);
     switch(this->menutype)
     {
     case MENU_TYPE_MAIN:
@@ -195,6 +250,8 @@ void MENU::ParseSelection(DATABASE* data)
         {
         case 1:
             data->PrintRecord();
+            submenu.PrintMenu();
+            PromptForSelection(data);
             break;
         case 2:
             data->PromptForData();
@@ -208,6 +265,7 @@ void MENU::ParseSelection(DATABASE* data)
         switch(this->selection)
         {
         case 1:
+            cout<<"key: "<<data->GetKey()<<endl;
             data->PromptForData();
             break;
         case 2:

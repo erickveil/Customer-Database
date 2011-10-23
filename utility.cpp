@@ -352,6 +352,15 @@ string ConvertLineLowerCase(string line)
     return newstr;
 }
 
+string ConvertLineUpperCase(string line)
+{
+    unsigned int t;
+    string newstr="";
+    for(t=0;t<line.size();++t)
+    newstr+=toupper(line[t]);
+    return newstr;
+}
+
 string Parse(string input, char delim, int* start)
 {
     string ret="";
