@@ -257,7 +257,7 @@ void MENU::ParseSelection(DATABASE* data)
         case 1:
             data->PrintRecord();
             submenu.PrintMenu();
-            PromptForSelection(data);
+            submenu.PromptForSelection(data);
             break;
         case 2:
             data->PromptForData();
@@ -275,6 +275,7 @@ void MENU::ParseSelection(DATABASE* data)
             data->PromptForData();
             break;
         case 2:
+            // should just pass through to go to the main menu.
             break;
         case 3:
             Quit(data);
