@@ -129,10 +129,13 @@ void DATABASE::PrintRecord(void)
     do
     {
         key=PromptValidString("Enter record Key: ");
-        iter = mymap.find(key);
+        if(mymap.count(key)==0)
+        {
+            cout<<"That key does not exist."<<endl;
+        }
+    }while(mymap.count(key)==0);
 
-        // check for key found
-    }while(false);
+    iter = mymap.find(key);
     // assign record to a string
     entry=iter->second;
     // parse string
@@ -174,10 +177,12 @@ void DATABASE::SaveMap(void)
     for (iter = mymap.begin(); iter != mymap.end(); ++iter)
      {
          temp = iter->second;
+
+         // converting string to array
          cstr = new char [temp.size()+2];
          strcpy(cstr,temp.c_str());
-         cout<<cstr;
          cstr[temp.size()+1]='\n';
+
         file.write(cstr,temp.size()+2);
         delete cstr;
      }
